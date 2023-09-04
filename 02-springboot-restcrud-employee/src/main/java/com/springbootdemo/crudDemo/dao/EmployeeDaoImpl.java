@@ -13,7 +13,7 @@ public class EmployeeDaoImpl implements EmployeeDAO{
 //    Field for Entitymanager
     private EntityManager entityManager;
 
-//    Setup constructor injection
+    /* Setup constructor injection */
     @Autowired
 //                         Constructor injection
     public EmployeeDaoImpl(EntityManager theEntityManager) {
@@ -21,6 +21,7 @@ public class EmployeeDaoImpl implements EmployeeDAO{
         entityManager = theEntityManager;
     }
 
+    /* Find all employees */
     @Override
     public List<Employee> findAll() {
 //        Create a query
@@ -29,5 +30,26 @@ public class EmployeeDaoImpl implements EmployeeDAO{
         List<Employee> employees = query.getResultList();
 //        return the results
         return employees;
+    }
+
+    /* Find employee by id */
+    @Override
+    public Employee findById(int id) {
+        Employee employee = entityManager.find(Employee.class, id);
+        return employee;
+    }
+
+    /* Save or update employee */
+    @Override
+    public Employee save(Employee employee) {
+        Employee dbEmployee = entityManager.merge(employee);
+        return dbEmployee;
+    }
+
+    /* Delete employee */
+    @Override
+    public void deleteById(int id) {
+        Employee employee = entityManager.find(Employee.class, id);
+        entityManager.remove(employee);
     }
 }
