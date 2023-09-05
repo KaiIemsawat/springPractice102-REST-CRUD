@@ -48,4 +48,37 @@ public class EmployeeCtrl {
         Employee dbEmployee = employeeService.save(theEmployee); // save update
         return  dbEmployee; // return updated employee
     }
+
+//    update mapping for PUT "/employees"
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee theEmployee) {
+        Employee dbEmployee = employeeService.save(theEmployee);
+        return dbEmployee;
+/**
+        In theis case, we need to give an id in Postman to give a specific employee needed to update
+        For example,
+        {
+            "id": 1,
+                "firstName": "Titann",
+                "lastName": "Iem",
+                "email": "titann@email.com"
+        }
+ **/
+    }
+
+//    add mapping for delete an employee by id "/employees/{employeeId}
+    @DeleteMapping("/employees/{employeeId}")
+    public String deleteEmployeeById(@PathVariable int employeeId) {
+        Employee tempEmployee = employeeService.findById(employeeId);
+
+//        Throw exception if not found
+        if (tempEmployee == null) {
+            throw new RuntimeException("Employee id " + employeeId + "not found");
+        }
+
+        employeeService.deleteById(employeeId);
+
+        return "Employee id " + employeeId + " is removed";
+    }
+
 }
